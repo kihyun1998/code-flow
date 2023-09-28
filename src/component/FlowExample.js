@@ -1,5 +1,4 @@
 import ReactFlow, { 
-    Controls, 
     Background, 
     applyEdgeChanges, 
     applyNodeChanges,
@@ -9,18 +8,27 @@ import ReactFlow, {
 
 import 'reactflow/dist/style.css';
 import { useState, useCallback } from 'react';
+import CustomNode from '../custom-component/CustomNode';
+import CustomControl from '../custom-component/CustomControl';
+import CustomMiniMap from '../custom-component/CustomMiniMap';
+import CustomReactFlow from '../custom-component/CustomReactFlow';
+
+const NodeTypes = {
+    custom: CustomNode,
+};
 
 const initialNodes = [
         {
             id: '1',
             data: { label: 'Hello' },
             position: { x: 0, y: 0 },
-            type: 'input',
+            type: 'custom',
         },
         {
             id: '2',
             data: { label: 'World' },
             position: { x: 100, y: 100 },
+            type: 'custom',
         },
     ];
 
@@ -61,18 +69,20 @@ function FlowExample() {
 
     return (
         <div className='flow-space'>
-            <ReactFlow 
+            <CustomReactFlow 
                 nodes={nodes} 
                 edges={edges}
                 onNodesChange={onNodesChange}
                 onEdgesChange={onEdgesChange}
                 onConnect={onConnect}
+                nodeTypes={NodeTypes}
             >
                 <Background />
-                <Controls />
                 <MiniMap />
+                <CustomControl/>
+                <CustomMiniMap/>
                 
-            </ReactFlow>
+            </CustomReactFlow>
         </div>
     );
 }

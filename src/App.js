@@ -1,15 +1,25 @@
 import ReactFlow  from 'reactflow';
 import styled, { ThemeProvider } from 'styled-components';
+
 import 'reactflow/dist/style.css';
 import './App.css';
+
+
+import { HiOutlineSun,HiOutlineMoon } from 'react-icons/hi';
+
 import React from 'react';
 import { useState, useCallback } from 'react';
 import FlowExample from './component/FlowExample';
-import { darkTheme, lightTheme } from './style-component/theme';
-import CustomButton from './style-component/CustomButton';
+import { darkTheme, lightTheme } from './custom-component/theme';
+import CustomButton from './custom-component/CustomButton';
+
 
 //https://reactflow.dev/docs/examples/styling/styled-components/
 //https://reactflow.dev/docs/guides/theming/
+
+
+
+
 function App() {
 
     const [mode, setMode] = useState('light');
@@ -22,10 +32,14 @@ function App() {
         <div className="App" style={{width:'100%', height:'100vh'}}>
             <ThemeProvider theme={theme}>
                 <div className='bar'>
-                    <CustomButton></CustomButton>
-                    <button className='btn-theme' onClick={toggleMode}>switch mode</button>
+                    <CustomButton onClick={toggleMode}>
+                        {
+                            mode === 'light' ? <HiOutlineSun/> : <HiOutlineMoon/>
+                        }
+                    </CustomButton>
                 </div>
                 <FlowExample/>
+                
                 
                 
             </ThemeProvider>
