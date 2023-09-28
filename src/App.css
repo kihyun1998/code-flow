@@ -4,5 +4,22 @@
 
 .App {
   text-align: center;
-  border: 1px solid red;
+  display: flex;
 }
+
+
+.flow-space{
+  height: 100%;
+  width: 95vw;
+  border: 1px solid blue;
+}
+
+.bar{
+  width: 4vw;
+  height: 100%;
+  border: 2px solid green;
+  background-color: rgb(34, 33, 33);
+  display: flex;
+  flex-direction: column;
+}
+

@@ -3,7 +3,8 @@ import ReactFlow, {
     Background, 
     applyEdgeChanges, 
     applyNodeChanges,
-    addEdge
+    addEdge,
+    MiniMap
 } from 'reactflow';
 
 import 'reactflow/dist/style.css';
@@ -33,7 +34,7 @@ const initialEdges = [
     }
 ]
 
-function Flow() {
+function FlowExample() {
     const [nodes,setNodes] = useState(initialNodes);
     const [edges, setEdges] = useState(initialEdges);
 
@@ -59,19 +60,21 @@ function Flow() {
 
 
     return (
-        <div style={{ height: '100%' }}>
-        <ReactFlow 
-            nodes={nodes} 
-            edges={edges}
-            onNodesChange={onNodesChange}
-            onEdgesChange={onEdgesChange}
-            onConnect={onConnect}
-        >
-            <Background />
-            <Controls />
-        </ReactFlow>
+        <div className='flow-space'>
+            <ReactFlow 
+                nodes={nodes} 
+                edges={edges}
+                onNodesChange={onNodesChange}
+                onEdgesChange={onEdgesChange}
+                onConnect={onConnect}
+            >
+                <Background />
+                <Controls />
+                <MiniMap />
+                
+            </ReactFlow>
         </div>
     );
 }
 
-export default Flow;
+export default FlowExample;
