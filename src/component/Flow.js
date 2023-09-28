@@ -1,35 +1,57 @@
-import ReactFlow, { Controls, Background } from 'reactflow';
+import ReactFlow, { Controls, Background, applyEdgeChanges, applyNodeChanges } from 'reactflow';
 import 'reactflow/dist/style.css';
+import { useState, useCallback } from 'react';
 
-const edges = [
+const initialNodes = [
+        {
+            id: '1',
+            data: { label: 'Hello' },
+            position: { x: 0, y: 0 },
+            type: 'input',
+        },
+        {
+            id: '2',
+            data: { label: 'World' },
+            position: { x: 100, y: 100 },
+        },
+    ];
+
+const initialEdges = [
     {
         id:'1-2',
         source: '1',
         target: '2',
-        label: 'step',
+        label: 'to',
         type: 'step'
     }
 ]
 
-const nodes = [
-  {
-    id: '1',
-    position: { x: 0, y: 0 },
-    data: { label: 'Hello' },
-    type: 'input',
-  },
-  {
-    id: '2',
-    position: { x: 100, y: 100 },
-    data: { label: 'World' },
-  },
-];
-
-
 function Flow() {
+    const [nodes,setNodes] = useState(initialNodes);
+    const [edges, setEdges] = useState(initialEdges);
+
+    // 노드 can click & drag
+    const onNodesChange = useCallback(
+        (changes) => setNodes(
+            (nds)=>applyNodeChanges(changes,nds)
+        ),[]
+    )
+
+    const onEdgesChange = useCallback(
+        (changes) => setNodes(
+            (nds) => applyEdgeChanges(changes,nds)
+        ),[]
+    )
+
+
     return (
         <div style={{ height: '100%' }}>
-        <ReactFlow nodes={nodes} edges={edges}>
+        <ReactFlow 
+            nodes={nodes} 
+            edges={edges}
+            onNodesChange={onNodesChange}
+            onEdgesChange={onEdgesChange}
+        >
             <Background />
             <Controls />
         </ReactFlow>
