@@ -1,4 +1,11 @@
-import ReactFlow, { Controls, Background, applyEdgeChanges, applyNodeChanges } from 'reactflow';
+import ReactFlow, { 
+    Controls, 
+    Background, 
+    applyEdgeChanges, 
+    applyNodeChanges,
+    addEdge
+} from 'reactflow';
+
 import 'reactflow/dist/style.css';
 import { useState, useCallback } from 'react';
 
@@ -18,11 +25,11 @@ const initialNodes = [
 
 const initialEdges = [
     {
-        id:'1-2',
-        source: '1',
-        target: '2',
-        label: 'to',
-        type: 'step'
+        // id:'1-2',
+        // source: '1',
+        // target: '2',
+        // label: 'to',
+        // type: 'step'
     }
 ]
 
@@ -30,18 +37,25 @@ function Flow() {
     const [nodes,setNodes] = useState(initialNodes);
     const [edges, setEdges] = useState(initialEdges);
 
-    // 노드 can click & drag
+    // node can click & drag
     const onNodesChange = useCallback(
         (changes) => setNodes(
             (nds)=>applyNodeChanges(changes,nds)
         ),[]
-    )
-
+    );
+    // node drag 시 edge도 따라가야되서(maybe?)
     const onEdgesChange = useCallback(
         (changes) => setNodes(
             (nds) => applyEdgeChanges(changes,nds)
         ),[]
-    )
+    );
+
+
+    const onConnect = useCallback(
+        (params) => setEdges(
+            (eds) =>  addEdge(params,eds)
+        ),[]
+    );
 
 
     return (
@@ -51,6 +65,7 @@ function Flow() {
             edges={edges}
             onNodesChange={onNodesChange}
             onEdgesChange={onEdgesChange}
+            onConnect={onConnect}
         >
             <Background />
             <Controls />
