@@ -1,13 +1,14 @@
-import ReactFlow, { 
+import { 
     Background, 
     applyEdgeChanges, 
     applyNodeChanges,
     addEdge,
-    MiniMap
+    MiniMap,
+    useReactFlow
 } from 'reactflow';
 
 import 'reactflow/dist/style.css';
-import { useState, useCallback } from 'react';
+import { useState, useCallback,useRef } from 'react';
 import CustomNode from '../custom-component/CustomNode';
 import CustomControl from '../custom-component/CustomControl';
 import CustomMiniMap from '../custom-component/CustomMiniMap';
@@ -66,6 +67,39 @@ function FlowExample() {
         ),[]
     );
 
+    const { project } = useReactFlow();
+
+    const reactFlowWrapper = useRef(null);
+    const connectingNodeId = useRef(null);
+    let id = 1;
+    const getId = () => `${id++}`;
+
+    const onConnectStart = useCallback((_, { nodeId }) => {
+        connectingNodeId.current = nodeId;
+      }, []);
+
+    const onConnectEnd = useCallback(
+        (event) => {
+          const targetIsPane = event.target.classList.contains('react-flow__pane');
+    
+          if (targetIsPane) {
+            // we need to remove the wrapper bounds, in order to get the correct position
+            const { top, left } = reactFlowWrapper.current.getBoundingClientRect();
+            const id = getId();
+            const newNode = {
+              id,
+              // we are removing the half of the node width (75) to center the new node
+              position: project({ x: event.clientX - left - 75, y: event.clientY - top }),
+              data: { label: `Node ${id}` },
+            };
+    
+            setNodes((nds) => nds.concat(newNode));
+            setEdges((eds) => eds.concat({ id, source: connectingNodeId.current, target: id }));
+          }
+        },
+        [project]
+      );
+
 
     return (
         <div className='flow-space'>
@@ -75,6 +109,8 @@ function FlowExample() {
                 onNodesChange={onNodesChange}
                 onEdgesChange={onEdgesChange}
                 onConnect={onConnect}
+                onConnectStart={onConnectStart}
+                onConnectEnd={onConnectEnd}
                 nodeTypes={NodeTypes}
             >
                 <Background />
