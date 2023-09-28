@@ -8,8 +8,8 @@ import FlowExample from './component/FlowExample';
 import { darkTheme, lightTheme } from './style-component/theme';
 import CustomButton from './style-component/CustomButton';
 
-
-
+//https://reactflow.dev/docs/examples/styling/styled-components/
+//https://reactflow.dev/docs/guides/theming/
 function App() {
 
     const [mode, setMode] = useState('light');
