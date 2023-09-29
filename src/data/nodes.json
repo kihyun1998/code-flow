@@ -1,0 +1,38 @@
+{
+    "nodes" : [
+        {
+            "id": "1",
+            "data": { 
+                "label": "Hello" 
+            },
+            "position": {
+                "x": 0,
+                "y": 0 
+            },
+            "type": "custom"
+        },
+        {
+            "id": "2",
+            "data": { 
+                "label": "World" 
+            },
+            "position": {
+                "x": 100,
+                "y": 100 
+            },
+            "type": "custom"
+        },
+        {
+            "id": "3",
+            "data": { 
+                "label": "Test" 
+            },
+            "position": {
+                "x": 150,
+                "y": 150 
+            },
+            "type": "custom"
+        }
+    ]
+}
+
