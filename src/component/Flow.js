@@ -45,9 +45,11 @@ const NodeTypes = {
 //     }
 // ]
 
-function FlowExample() {
-    const [nodes,setNodes, onNodesChange] = useNodesState(initialNodes);
-    const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+function Flow(props) {
+    // const [nodes,setNodes, onNodesChange] = useNodesState(initialNodes);
+    // const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+    // const [nodes,setNodes] = useState(initialNodes);
+    // const [edges, setEdges] = useState(initialEdges);
 
     // // node can click & drag
     // const onNodesChange = useCallback(
@@ -63,21 +65,27 @@ function FlowExample() {
     // );
 
 
-    const onConnect = useCallback(
-        (params) => setEdges(
+    // const onConnect = useCallback(
+    //     (params) => props.setEdges(
+    //         (eds) =>  addEdge(params,eds)
+    //     ),[]
+    // );
+    const onConnect = (params) => {
+        props.setEdges(
             (eds) =>  addEdge(params,eds)
-        ),[]
-    );
+        )
+    }
+
     
 
 
     return (
         <div className='flow-space'>
             <CustomReactFlow 
-                nodes={nodes} 
-                edges={edges}
-                onNodesChange={onNodesChange}
-                onEdgesChange={onEdgesChange}
+                nodes={props.nodes} 
+                edges={props.edges}
+                onNodesChange={props.onNodesChange}
+                onEdgesChange={props.onEdgesChange}
                 onConnect={onConnect}
                 nodeTypes={NodeTypes}
             >
@@ -91,4 +99,4 @@ function FlowExample() {
     );
 }
 
-export default FlowExample;
+export default Flow;
