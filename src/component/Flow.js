@@ -82,7 +82,7 @@ function Flow(props) {
     return (
         <div className='flow-space'>
             <CustomReactFlow 
-                nodes={props.nodes} 
+                nodes={props.updateNodes} 
                 edges={props.edges}
                 onNodesChange={props.onNodesChange}
                 onEdgesChange={props.onEdgesChange}

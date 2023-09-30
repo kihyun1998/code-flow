@@ -1,6 +1,18 @@
-import data from '../data/nodes.json'
+// import data from '../data/nodes.json'
 
-export const nodes = data.nodes.map(node => ({
+// 로컬 JSON 불러오기
+const fs = window.require('fs');
+const { app } = window.require('@electron/remote');
+const homePath = `${app.getPath('home')}/.erd/`;
+const jsonDataPath = `${homePath}/jsonData.json`
+let jData;
+if (fs.existsSync(jsonDataPath)) {
+    const data = fs.readFileSync(jsonDataPath);
+    jData = JSON.parse(data);
+}
+
+
+export const nodes = jData.nodes.map(node => ({
     id: node.id,
     data: { label: node.data.label },
     position: {

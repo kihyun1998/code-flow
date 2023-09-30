@@ -8,7 +8,10 @@ function createWindow() {
         width: 1200,
         height: 800,
         webPreferences: {
-            enableRemoteModule: true
+            // nodejs 모듈(fs,path 등)을 사용하기 위해 추가
+            nodeIntegration: true,
+            enableRemoteModule: true,
+            contextIsolation: false
         }
     })
 

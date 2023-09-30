@@ -17,10 +17,21 @@ import React, { useState, useCallback,useRef } from 'react';
 import Flow from './component/Flow';
 import { darkTheme, lightTheme } from './custom-component/theme';
 import CustomButton from './custom-component/CustomButton';
-import data from './data/nodes.json'
 import { nodes as nodesData,edges as edgesData } from './data/data';
 //https://reactflow.dev/docs/examples/styling/styled-components/
 //https://reactflow.dev/docs/guides/theming/
+
+
+
+
+const fs = window.require('fs');
+
+const { app } = window.require('@electron/remote');
+
+// 홈 디렉토리 경로
+const homePath = `${app.getPath('home')}/.erd/`;
+// JSON 파일 저장 경로
+const jsonDataPath = `${homePath}/jsonData.json`
 
 
 const getNodeId = () => `${String(+new Date()).slice(6)}`;
@@ -40,15 +51,15 @@ const getNodeId = () => `${String(+new Date()).slice(6)}`;
 //   };
 
 
-const jsonArr = data.nodes.map(node => ({
-    id: node.id,
-    data: { label: node.data.label },
-    position: {
-        x: node.position.x,
-        y: node.position.y
-    },
-    type: node.type
-}));
+// const jsonArr = data.nodes.map(node => ({
+//     id: node.id,
+//     data: { label: node.data.label },
+//     position: {
+//         x: node.position.x,
+//         y: node.position.y
+//     },
+//     type: node.type
+// }));
 
 
 
@@ -66,7 +77,7 @@ function App() {
     const initialEdges = useRef(edgesData);
 
     // 노드에 관한 state
-    const [nodes,setNodes] = useState(initialNodes.current);
+    const [updateNodes,setNodes] = useState(initialNodes.current);
     // 간선에 관한 state
     const [edges, setEdges] = useState(initialEdges.current);
 
@@ -94,9 +105,9 @@ function App() {
     const addNode = useCallback(
         ()=>{
             yPos.current += 50;
-            setNodes((nodes)=>{
+            setNodes((updateNodes)=>{
                 return[
-                    ...nodes,
+                    ...updateNodes,
                     {
                         id: getNodeId(),
                         data: {
@@ -113,10 +124,29 @@ function App() {
         },[]
     );
 
-    const checkNodes = ()=>{
-        console.log("current : ",nodes)
-        console.log("initial : ",initialNodes.current)
+    // const checkNodes = ()=>{
+    //     console.log("current : ",updateNodes)
+    //     console.log("initial : ",initialNodes.current)
+    // }
+
+    const saveJson = ()=>{
+        // 폴더 없다면 생성
+        !fs.existsSync(homePath) && fs.mkdirSync(homePath);
+        const updateNodesData = {
+            nodes:updateNodes,
+        }
+        fs.writeFileSync(jsonDataPath,JSON.stringify(updateNodesData, null, 4));
     }
+
+    // const loadData = () => {
+    //     if (fs.existsSync(jsonDataPath)) {
+    //         const data = fs.readFileSync(jsonDataPath);
+            
+    //         const fData = JSON.parse(data);
+    //         console.log(fData.nodes)
+    //     }
+        
+    // }
 
     return (
         <div className="App" style={{width:'100%', height:'100vh'}}>
@@ -132,12 +162,20 @@ function App() {
                         <BsDatabaseAdd onClick={addNode}/>
                     </CustomButton>
 
-                    <CustomButton onClick={checkNodes}>
+                    {/* <CustomButton onClick={checkNodes}>
                         N
+                    </CustomButton> */}
+
+                    <CustomButton onClick={saveJson}>
+                        save
                     </CustomButton>
+
+                    {/* <CustomButton onClick={loadData}>
+                        L
+                    </CustomButton> */}
                     
                 </div>
-                <Flow nodes={nodes}  edges={edges} setEdges={setEdges} onNodesChange={onNodesChange} onEdgesChange={onEdgesChange} />
+                <Flow updateNodes={updateNodes}  edges={edges} setEdges={setEdges} onNodesChange={onNodesChange} onEdgesChange={onEdgesChange} />
                 
                 
                 
