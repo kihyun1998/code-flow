@@ -1,4 +1,5 @@
-import data from '../data/nodes.json'
+import { type } from '@testing-library/user-event/dist/type';
+import nodeData from '../data/nodes.json'
 
 // 로컬 JSON 불러오기
 const fs = window.require('fs');
@@ -6,12 +7,17 @@ const { app } = window.require('@electron/remote');
 const homePath = `${app.getPath('home')}/.erd/`;
 const jsonDataPath = `${homePath}/jsonData.json`
 let jData;
+
+// 여기서 추가로 jData.nodes나 jData.edges가 있는지 확인하는 로직 필요하다.
+// 지금은 에러남
 if (fs.existsSync(jsonDataPath)) {
     const data = fs.readFileSync(jsonDataPath);
     jData = JSON.parse(data);
 } else{
-    jData = data;
+    jData = nodeData;
 }
+
+
 
 
 export const nodes = jData.nodes.map(node => ({
@@ -40,7 +46,14 @@ export const nodes = jData.nodes.map(node => ({
 //     },
 // ];
 
-export const edges = [
+export const edges = jData.edges.map(edge=>({
+    id:edge.id,
+    source:edge.source,
+    target:edge.target,
+    type:'step'
+}));
+
+[
     {
         // id:'1-2',
         // source: '1',

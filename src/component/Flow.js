@@ -1,49 +1,18 @@
 import { 
     Background, 
-    applyEdgeChanges, 
-    applyNodeChanges,
-    addEdge,
-    MiniMap,
-    useNodesState,
-    useEdgesState
+    MiniMap
 } from 'reactflow';
 
 import 'reactflow/dist/style.css';
-import { useState, useCallback } from 'react';
 import CustomNode from '../custom-component/CustomNode';
 import CustomControl from '../custom-component/CustomControl';
 import CustomMiniMap from '../custom-component/CustomMiniMap';
 import CustomReactFlow from '../custom-component/CustomReactFlow';
-import { nodes as initialNodes,edges as initialEdges } from '../data/data';
 
 const NodeTypes = {
     custom: CustomNode,
 };
 
-// const initialNodes = [
-//         {
-//             id: '1',
-//             data: { label: 'Hello' },
-//             position: { x: 0, y: 0 },
-//             type: 'custom',
-//         },
-//         {
-//             id: '2',
-//             data: { label: 'World' },
-//             position: { x: 100, y: 100 },
-//             type: 'custom',
-//         },
-//     ];
-
-// const initialEdges = [
-//     {
-//         // id:'1-2',
-//         // source: '1',
-//         // target: '2',
-//         // label: 'to',
-//         // type: 'step'
-//     }
-// ]
 
 function Flow(props) {
     // const [nodes,setNodes, onNodesChange] = useNodesState(initialNodes);
@@ -70,14 +39,7 @@ function Flow(props) {
     //         (eds) =>  addEdge(params,eds)
     //     ),[]
     // );
-    const onConnect = (params) => {
-        props.setEdges(
-            (eds) =>  addEdge(params,eds)
-        )
-    }
-
     
-
 
     return (
         <div className='flow-space'>
@@ -86,7 +48,7 @@ function Flow(props) {
                 edges={props.edges}
                 onNodesChange={props.onNodesChange}
                 onEdgesChange={props.onEdgesChange}
-                onConnect={onConnect}
+                onConnect={props.onConnect}
                 nodeTypes={NodeTypes}
             >
                 <Background />

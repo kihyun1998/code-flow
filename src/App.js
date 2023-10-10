@@ -1,6 +1,7 @@
 import { 
     applyEdgeChanges, 
-    applyNodeChanges
+    applyNodeChanges,
+    addEdge
 } from 'reactflow';
 
 import { ThemeProvider } from 'styled-components';
@@ -34,33 +35,6 @@ const homePath = `${app.getPath('home')}/.erd/`;
 const jsonDataPath = `${homePath}/jsonData.json`
 
 const getNodeId = () => `${String(+new Date()).slice(6)}`;
-
-// const onAdd = () => {
-//     const id = getNodeId();
-//     const newNode = {
-//         id,
-//         data: { label: `${id}` },
-//         position: {
-//             x: 0,
-//             y: 0 + (nodes.length + 1) * 20
-//         },
-//         type: 'custom',
-//     };
-//         setNodes((nds) => nds.concat(newNode));
-//   };
-
-
-// const jsonArr = data.nodes.map(node => ({
-//     id: node.id,
-//     data: { label: node.data.label },
-//     position: {
-//         x: node.position.x,
-//         y: node.position.y
-//     },
-//     type: node.type
-// }));
-
-
 
 
 function App() {
@@ -100,6 +74,12 @@ function App() {
         ),[]
     );
 
+    const onConnect = (params) => {
+        setEdges(
+            (eds) =>  addEdge(params,eds)
+        )
+    };
+
 
     const addNode = useCallback(
         ()=>{
@@ -133,6 +113,7 @@ function App() {
         !fs.existsSync(homePath) && fs.mkdirSync(homePath);
         const updateNodesData = {
             nodes:updateNodes,
+            edges:edges,
         }
         fs.writeFileSync(jsonDataPath,JSON.stringify(updateNodesData, null, 4));
     }
@@ -174,7 +155,7 @@ function App() {
                     </CustomButton> */}
                     
                 </div>
-                <Flow updateNodes={updateNodes}  edges={edges} setEdges={setEdges} onNodesChange={onNodesChange} onEdgesChange={onEdgesChange} />
+                <Flow updateNodes={updateNodes}  edges={edges} setEdges={setEdges} onNodesChange={onNodesChange} onEdgesChange={onEdgesChange} onConnect={onConnect}/>
                 
                 
                 
