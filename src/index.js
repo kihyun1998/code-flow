@@ -5,6 +5,13 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 
+const fs = window.require('fs');
+const { app } = window.require('@electron/remote');
+const homePath = `${app.getPath('home')}/.erd/`;
+
+// 초기 디렉토리 없으면 생성
+!fs.existsSync(homePath) && fs.mkdirSync(homePath);
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>

@@ -1,4 +1,4 @@
-// import data from '../data/nodes.json'
+import data from '../data/nodes.json'
 
 // 로컬 JSON 불러오기
 const fs = window.require('fs');
@@ -9,6 +9,8 @@ let jData;
 if (fs.existsSync(jsonDataPath)) {
     const data = fs.readFileSync(jsonDataPath);
     jData = JSON.parse(data);
+} else{
+    jData = data;
 }
 
 
