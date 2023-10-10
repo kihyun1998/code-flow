@@ -33,7 +33,6 @@ const homePath = `${app.getPath('home')}/.erd/`;
 // JSON 파일 저장 경로
 const jsonDataPath = `${homePath}/jsonData.json`
 
-
 const getNodeId = () => `${String(+new Date()).slice(6)}`;
 
 // const onAdd = () => {
