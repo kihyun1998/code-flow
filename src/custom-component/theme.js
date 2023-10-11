@@ -1,6 +1,6 @@
 export const lightTheme = {
     bg: '#fff',
-    primary: '#ff0072',
+    primary: '#2073C5',
   
     nodeBg: '#f2f2f5',
     nodeColor: '#222',
@@ -16,11 +16,11 @@ export const lightTheme = {
   
   export const darkTheme = {
     bg: '#000',
-    primary: '#ff0072',
+    primary: '#2073C5',
   
     nodeBg: '#343435',
     nodeColor: '#f9f9f9',
-    nodeBorder: '#888',
+    nodeBorder: '#575555',
   
     minimapMaskBg: '#343435',
   
