@@ -1,0 +1,45 @@
+{
+    "nodes" : [
+        {
+            "id": "1",
+            "data": {
+                "label": "Hello" 
+            },
+            "position": {
+                "x": 10,
+                "y": 10
+            },
+            "type": "custom",
+            "width": 121,
+            "height": 43,
+            "selected": false,
+            "dragging": false
+        },
+        {
+            "id": "2",
+            "data": {
+                "label": "World" 
+            },
+            "position": {
+                "x": 110,
+                "y": 110
+            },
+            "type": "custom",
+            "width": 121,
+            "height": 43,
+            "selected": false,
+            "dragging": false
+        }
+    ],
+    "edges" : [
+        {},
+        {
+            "source": "1",
+            "sourceHandle": null,
+            "target": "2",
+            "targetHandle": null,
+            "id": "reactflow__edge-1-2"
+        }
+    ]
+}
+

@@ -1,7 +1,6 @@
 import { 
     applyEdgeChanges, 
     applyNodeChanges,
-    addEdge
 } from 'reactflow';
 
 import { ThemeProvider } from 'styled-components';
@@ -74,11 +73,7 @@ function App() {
         ),[]
     );
 
-    const onConnect = (params) => {
-        setEdges(
-            (eds) =>  addEdge(params,eds)
-        )
-    };
+    
 
 
     const addNode = useCallback(
@@ -103,11 +98,6 @@ function App() {
         },[]
     );
 
-    // const checkNodes = ()=>{
-    //     console.log("current : ",updateNodes)
-    //     console.log("initial : ",initialNodes.current)
-    // }
-
     const saveJson = ()=>{
         // 폴더 없다면 생성
         !fs.existsSync(homePath) && fs.mkdirSync(homePath);
@@ -118,15 +108,9 @@ function App() {
         fs.writeFileSync(jsonDataPath,JSON.stringify(updateNodesData, null, 4));
     }
 
-    // const loadData = () => {
-    //     if (fs.existsSync(jsonDataPath)) {
-    //         const data = fs.readFileSync(jsonDataPath);
-            
-    //         const fData = JSON.parse(data);
-    //         console.log(fData.nodes)
-    //     }
-        
-    // }
+    const showedge = () => {
+        console.log(edges)
+    }
 
     return (
         <div className="App" style={{width:'100%', height:'100vh'}}>
@@ -142,20 +126,16 @@ function App() {
                         <BsDatabaseAdd onClick={addNode}/>
                     </CustomButton>
 
-                    {/* <CustomButton onClick={checkNodes}>
-                        N
-                    </CustomButton> */}
-
                     <CustomButton onClick={saveJson}>
                         save
                     </CustomButton>
 
-                    {/* <CustomButton onClick={loadData}>
-                        L
-                    </CustomButton> */}
+                    <CustomButton onClick={showedge}>
+                        E
+                    </CustomButton>
                     
                 </div>
-                <Flow updateNodes={updateNodes}  edges={edges} setEdges={setEdges} onNodesChange={onNodesChange} onEdgesChange={onEdgesChange} onConnect={onConnect}/>
+                <Flow updateNodes={updateNodes}  edges={edges} setEdges={setEdges} onNodesChange={onNodesChange} onEdgesChange={onEdgesChange}/>
                 
                 
                 

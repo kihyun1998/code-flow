@@ -1,5 +1,4 @@
-import { type } from '@testing-library/user-event/dist/type';
-import nodeData from '../data/nodes.json'
+import data from '../data/data.json'
 
 // 로컬 JSON 불러오기
 const fs = window.require('fs');
@@ -8,16 +7,14 @@ const homePath = `${app.getPath('home')}/.erd/`;
 const jsonDataPath = `${homePath}/jsonData.json`
 let jData;
 
-// 여기서 추가로 jData.nodes나 jData.edges가 있는지 확인하는 로직 필요하다.
-// 지금은 에러남
 if (fs.existsSync(jsonDataPath)) {
+    // 파일 존재한다면
     const data = fs.readFileSync(jsonDataPath);
     jData = JSON.parse(data);
 } else{
-    jData = nodeData;
+    //파일이 없다면
+    jData = data;
 }
-
-
 
 
 export const nodes = jData.nodes.map(node => ({
@@ -27,38 +24,15 @@ export const nodes = jData.nodes.map(node => ({
         x: node.position.x,
         y: node.position.y
     },
-    type: node.type
+    type: node.type,
+    width: node.width,
+    height: node.height
 }));
-
-// json 사용하기 전 방식
-// export const nodes = [
-//     {
-//         id: '1',
-//         data: { label: 'Hello' },
-//         position: { x: 0, y: 0 },
-//         type: 'custom',
-//     },
-//     {
-//         id: '2',
-//         data: { label: 'World' },
-//         position: { x: 100, y: 100 },
-//         type: 'custom',
-//     },
-// ];
 
 export const edges = jData.edges.map(edge=>({
-    id:edge.id,
-    source:edge.source,
-    target:edge.target,
-    type:'step'
+    id: edge.id,
+    source: edge.source,
+    sourceHandle: edge.sourceHandle,
+    target: edge.target,
+    targetHandle: edge.targetHandle
 }));
-
-[
-    {
-        // id:'1-2',
-        // source: '1',
-        // target: '2',
-        // label: 'to',
-        // type: 'step'
-    }
-]

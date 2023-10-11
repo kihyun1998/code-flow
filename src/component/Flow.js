@@ -1,6 +1,7 @@
 import { 
     Background, 
-    MiniMap
+    MiniMap,
+    addEdge
 } from 'reactflow';
 
 import 'reactflow/dist/style.css';
@@ -12,6 +13,7 @@ import CustomReactFlow from '../custom-component/CustomReactFlow';
 const NodeTypes = {
     custom: CustomNode,
 };
+
 
 
 function Flow(props) {
@@ -40,6 +42,11 @@ function Flow(props) {
     //     ),[]
     // );
     
+    const onConnect = (params) => {
+        props.setEdges(
+            (eds) =>  addEdge(params,eds)
+        )
+    };
 
     return (
         <div className='flow-space'>
@@ -48,7 +55,7 @@ function Flow(props) {
                 edges={props.edges}
                 onNodesChange={props.onNodesChange}
                 onEdgesChange={props.onEdgesChange}
-                onConnect={props.onConnect}
+                onConnect={onConnect}
                 nodeTypes={NodeTypes}
             >
                 <Background />
