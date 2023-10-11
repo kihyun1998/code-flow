@@ -150,7 +150,7 @@ function App() {
     }
 
     const selTest = () => {
-        console.log("hi")
+        console.log(updateNodes)
     }
 
     return (
