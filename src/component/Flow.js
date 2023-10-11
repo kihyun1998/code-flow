@@ -8,6 +8,7 @@ import CustomNode from '../custom-component/CustomNode';
 import CustomControl from '../custom-component/CustomControl';
 import CustomMiniMap from '../custom-component/CustomMiniMap';
 import CustomReactFlow from '../custom-component/CustomReactFlow';
+import CustomConnectionLine from '../custom-component/CustomConnectionLine';
 
 const NodeTypes = {
     custom: CustomNode,
@@ -28,6 +29,7 @@ function Flow(props) {
                 onEdgeUpdate={props.onEdgeUpdate}
                 onEdgeUpdateStart={props.onEdgeUpdateStart}
                 onEdgeUpdateEnd={props.onEdgeUpdateEnd}
+                connectionLineComponent={CustomConnectionLine}
             >
                 <Background />
                 <MiniMap />

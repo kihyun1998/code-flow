@@ -11,8 +11,8 @@ const Node = styled.div`
 
   .react-flow__handle {
     background: ${(props) => props.theme.primary};
-    width: 8px;
-    height: 10px;
+    width: 6px;
+    height: 6px;
     border-radius: 3px;
   }
 `;

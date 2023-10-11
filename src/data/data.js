@@ -34,5 +34,7 @@ export const edges = jData.edges.map(edge=>({
     source: edge.source,
     sourceHandle: edge.sourceHandle,
     target: edge.target,
-    targetHandle: edge.targetHandle
+    targetHandle: edge.targetHandle,
+    animated: edge.animated,
+    type: edge.type
 }));

@@ -12,6 +12,8 @@ export const lightTheme = {
     controlsBgHover: '#eee',
     controlsColor: '#222',
     controlsBorder: '#ddd',
+
+    lineColor:"#B1B1B7",
   };
   
   export const darkTheme = {
@@ -27,5 +29,7 @@ export const lightTheme = {
     controlsBg: '#555',
     controlsBgHover: '#676768',
     controlsColor: '#dddddd',
-    controlsBorder: '#676768',
+    controlsBorder: '#575555',
+
+    lineColor:"#B1B1B7",
   };

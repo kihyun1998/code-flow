@@ -38,7 +38,9 @@
             "sourceHandle": null,
             "target": "2",
             "targetHandle": null,
-            "id": "reactflow__edge-1-2"
+            "id": "reactflow__edge-1-2",
+            "animated": true,
+            "type": "smoothstep"
         }
     ]
 }

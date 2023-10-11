@@ -28,7 +28,6 @@ import React, { useState, useCallback,useRef } from 'react';
 
 import Flow from './component/Flow';
 import { darkTheme, lightTheme } from './custom-component/theme';
-import CustomButton from './custom-component/CustomButton';
 import { nodes as nodesData,edges as edgesData } from './data/data';
 
 const fs = window.require('fs');
@@ -49,19 +48,30 @@ function App() {
     // 초기위치
     const yPos = useRef(0);
 
-
+    // 아이디 값 구하기
     const getNodeId = () => `${String(+new Date()).slice(6)}`;
     
 
-    
+    // 테마 설정
+    // antd
+    const [isDarkMode, setIsDarkMode] = useState(false);
+    const { defaultAlgorithm, darkAlgorithm } = theme;
 
+    //react-flow
+    const [mode, setMode] = useState('light');
+    const flowTheme = mode === 'light' ? lightTheme : darkTheme;
+
+
+    const toggleMode = () => {
+        setIsDarkMode((previousValue) => !previousValue);
+        setMode((m) => (m === 'light' ? 'dark' : 'light'));
+    }
+    
     // 노드에 관한 state
     const [updateNodes,setNodes] = useState(initialNodes.current);
     // 간선에 관한 state
     const [edges, setEdges] = useState(initialEdges.current);
-
     
-
     // node can click & drag
     const onNodesChange = useCallback(
         (changes) => setNodes(
@@ -76,9 +86,14 @@ function App() {
         ),[]
     );
 
+    // 엣지 연결
     const onConnect = useCallback(
         (params) => setEdges(
-            (els) => addEdge(params, els)
+            (els) => addEdge({
+                        ...params,
+                        animated: true,
+                        type: "smoothstep"
+                        },els)
         ), []);
     
 
@@ -100,8 +115,7 @@ function App() {
         }
     },[]);
     
-
-
+    // 노드 추가
     const addNode = useCallback(
         ()=>{
             yPos.current += 50;
@@ -124,6 +138,7 @@ function App() {
         },[]
     );
 
+    // 파일 저장(노드, 엣지)
     const saveJson = ()=>{
         // 폴더 없다면 생성
         !fs.existsSync(homePath) && fs.mkdirSync(homePath);
@@ -134,49 +149,30 @@ function App() {
         fs.writeFileSync(jsonDataPath,JSON.stringify(updateNodesData, null, 4));
     }
 
-
-    // 테마 설정
-    // antd
-    const [isDarkMode, setIsDarkMode] = useState(false);
-    const { defaultAlgorithm, darkAlgorithm } = theme;
-
-    //react-flow
-    const [mode, setMode] = useState('light');
-    const flowTheme = mode === 'light' ? lightTheme : darkTheme;
-
-
-    const toggleDark = () => {
-        setIsDarkMode((previousValue) => !previousValue);
-        setMode((m) => (m === 'light' ? 'dark' : 'light'));
+    const selTest = () => {
+        console.log("hi")
     }
-    
-
-    // const toggleMode = () => {
-    //     setMode((m) => (m === 'light' ? 'dark' : 'light'));
-    // };
 
     return (
         <div className="App" style={{width:'100%', height:'100vh'}}>
             <ConfigProvider locale={koKR} theme={{
                 algorithm : isDarkMode ? darkAlgorithm : defaultAlgorithm
             }}>
-                
-
+                <FloatButton
+                    icon={ isDarkMode ? <MdOutlineLightMode/> : <MdDarkMode/>}
+                    onClick={toggleMode}
+                />
                 <ThemeProvider theme={flowTheme}>
                     <div className='bar'>
                         <Button onClick={addNode}>
                             <BsDatabaseAdd/>
                         </Button>
-
                         <Button onClick={saveJson}>
                             <AiOutlineSave/>
                         </Button>
-                        
-                        
-                        <FloatButton
-                            icon={ isDarkMode ? <MdOutlineLightMode/> : <MdDarkMode/>}
-                            onClick={toggleDark}
-                        />
+                        <Button onClick={selTest}>
+                            Test
+                        </Button>
                     </div>
                     <Flow 
                         updateNodes={updateNodes}
