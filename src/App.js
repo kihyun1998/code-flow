@@ -68,9 +68,11 @@ function App() {
     }
     
     // 노드에 관한 state
-    const [updateNodes,setNodes] = useState(initialNodes.current);
+    const [ updateNodes,setNodes ] = useState(initialNodes.current);
     // 간선에 관한 state
-    const [edges, setEdges] = useState(initialEdges.current);
+    const [ edges, setEdges ] = useState(initialEdges.current);
+    // 선택된 노드 관련 state
+    const [ selectedNode, setSelectedNode ] = useState(null); 
     
     // node can click & drag
     const onNodesChange = useCallback(
@@ -149,8 +151,20 @@ function App() {
         fs.writeFileSync(jsonDataPath,JSON.stringify(updateNodesData, null, 4));
     }
 
+
+
+    // 노드 선택 시 세팅
+    const onNodeClick = (event, node) => {
+        setSelectedNode(node)
+        console.log('click node', node);
+    }
+    // 배경화면 누르면 노드 선택 해제
+    const onPaneClick = (event) => {
+        setSelectedNode(null)
+    }
+
     const selTest = () => {
-        console.log(updateNodes)
+        console.log(selectedNode);
     }
 
     return (
@@ -184,6 +198,8 @@ function App() {
                         onEdgeUpdateStart={onEdgeUpdateStart}
                         onEdgeUpdate={onEdgeUpdate}
                         onEdgeUpdateEnd={onEdgeUpdateEnd}
+                        onNodeClick={onNodeClick}
+                        onPaneClick={onPaneClick}
                     />
                 </ThemeProvider>
 
