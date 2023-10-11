@@ -1,6 +1,8 @@
 import { 
     applyEdgeChanges, 
     applyNodeChanges,
+    addEdge,
+    updateEdge
 } from 'reactflow';
 
 import { ThemeProvider } from 'styled-components';
@@ -18,26 +20,27 @@ import Flow from './component/Flow';
 import { darkTheme, lightTheme } from './custom-component/theme';
 import CustomButton from './custom-component/CustomButton';
 import { nodes as nodesData,edges as edgesData } from './data/data';
-//https://reactflow.dev/docs/examples/styling/styled-components/
-//https://reactflow.dev/docs/guides/theming/
-
-
-
 
 const fs = window.require('fs');
-
 const { app } = window.require('@electron/remote');
-
 // 홈 디렉토리 경로
 const homePath = `${app.getPath('home')}/.erd/`;
 // JSON 파일 저장 경로
 const jsonDataPath = `${homePath}/jsonData.json`
 
-const getNodeId = () => `${String(+new Date()).slice(6)}`;
-
 
 function App() {
+    // 엣지 수정을 위한 변수
+    const edgeUpdateSuccessful = useRef(true);
+    // 초기 노드
+    const initialNodes = useRef(nodesData);
+    //초기 엣지
+    const initialEdges = useRef(edgesData);
+    // 초기위치
+    const yPos = useRef(0);
 
+
+    const getNodeId = () => `${String(+new Date()).slice(6)}`;
     const [mode, setMode] = useState('light');
     const theme = mode === 'light' ? lightTheme : darkTheme;
 
@@ -45,19 +48,14 @@ function App() {
         setMode((m) => (m === 'light' ? 'dark' : 'light'));
     };
 
-    const initialNodes = useRef(nodesData);
-    const initialEdges = useRef(edgesData);
+    
 
     // 노드에 관한 state
     const [updateNodes,setNodes] = useState(initialNodes.current);
     // 간선에 관한 state
     const [edges, setEdges] = useState(initialEdges.current);
 
-    const yPos = useRef(0);
-
-    // Flow와 함께 사용한다면 밑 코드 사용 가능
-    // const [nodes,setNodes, onNodesChange] = useNodesState(initialNodes);
-    // const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+    
 
     // node can click & drag
     const onNodesChange = useCallback(
@@ -73,6 +71,26 @@ function App() {
         ),[]
     );
 
+    const onConnect = useCallback(
+        (params) => setEdges(
+            (els) => addEdge(params, els)
+        ), []);
+    
+
+    const onEdgeUpdateStart = useCallback(()=>{
+        edgeUpdateSuccessful.current = false;
+    });
+
+    const onEdgeUpdate = useCallback((oldEdge, newConnection)=>{
+        edgeUpdateSuccessful.current = true;
+        setEdges((els) => updateEdge(oldEdge, newConnection,els));
+    },[]);
+
+    const onEdgeUpdateEnd = useCallback((_, edge)=>{
+        if(!edgeUpdateSuccessful.current){
+            setEdges((eds)=>eds.filter((e)=>e.id !== edge.id));
+        }
+    })
     
 
 
@@ -108,10 +126,6 @@ function App() {
         fs.writeFileSync(jsonDataPath,JSON.stringify(updateNodesData, null, 4));
     }
 
-    const showedge = () => {
-        console.log(edges)
-    }
-
     return (
         <div className="App" style={{width:'100%', height:'100vh'}}>
             <ThemeProvider theme={theme}>
@@ -129,13 +143,19 @@ function App() {
                     <CustomButton onClick={saveJson}>
                         save
                     </CustomButton>
-
-                    <CustomButton onClick={showedge}>
-                        E
-                    </CustomButton>
                     
                 </div>
-                <Flow updateNodes={updateNodes}  edges={edges} setEdges={setEdges} onNodesChange={onNodesChange} onEdgesChange={onEdgesChange}/>
+                <Flow 
+                    updateNodes={updateNodes}
+                    edges={edges} 
+                    setEdges={setEdges} 
+                    onNodesChange={onNodesChange} 
+                    onEdgesChange={onEdgesChange} 
+                    onConnect={onConnect}
+                    onEdgeUpdateStart={onEdgeUpdateStart}
+                    onEdgeUpdate={onEdgeUpdate}
+                    onEdgeUpdateEnd={onEdgeUpdateEnd}
+                />
                 
                 
                 

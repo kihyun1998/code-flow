@@ -1,7 +1,6 @@
 import { 
     Background, 
-    MiniMap,
-    addEdge
+    MiniMap
 } from 'reactflow';
 
 import 'reactflow/dist/style.css';
@@ -17,36 +16,6 @@ const NodeTypes = {
 
 
 function Flow(props) {
-    // const [nodes,setNodes, onNodesChange] = useNodesState(initialNodes);
-    // const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
-    // const [nodes,setNodes] = useState(initialNodes);
-    // const [edges, setEdges] = useState(initialEdges);
-
-    // // node can click & drag
-    // const onNodesChange = useCallback(
-    //     (changes) => setNodes(
-    //         (nds)=>applyNodeChanges(changes,nds)
-    //     ),[]
-    // );
-    // // node drag 시 edge도 따라가야되서(maybe?)
-    // const onEdgesChange = useCallback(
-    //     (changes) => setNodes(
-    //         (nds) => applyEdgeChanges(changes,nds)
-    //     ),[]
-    // );
-
-
-    // const onConnect = useCallback(
-    //     (params) => props.setEdges(
-    //         (eds) =>  addEdge(params,eds)
-    //     ),[]
-    // );
-    
-    const onConnect = (params) => {
-        props.setEdges(
-            (eds) =>  addEdge(params,eds)
-        )
-    };
 
     return (
         <div className='flow-space'>
@@ -55,8 +24,11 @@ function Flow(props) {
                 edges={props.edges}
                 onNodesChange={props.onNodesChange}
                 onEdgesChange={props.onEdgesChange}
-                onConnect={onConnect}
+                onConnect={props.onConnect}
                 nodeTypes={NodeTypes}
+                onEdgeUpdate={props.onEdgeUpdate}
+                onEdgeUpdateStart={props.onEdgeUpdateStart}
+                onEdgeUpdateEnd={props.onEdgeUpdateEnd}
             >
                 <Background />
                 <MiniMap />
