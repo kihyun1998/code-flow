@@ -12,6 +12,7 @@ import {
     Button
 }from "antd";
 
+
 import koKR from 'antd/lib/locale/ko_KR';
 
 
@@ -47,6 +48,10 @@ function App() {
     const initialEdges = useRef(edgesData);
     // 초기위치
     const yPos = useRef(0);
+    
+    // 초기 아이디 추후에는 0말고 노드의 마지막 id로 설정해야 함
+    // 왜쓰려했는지 기억안남
+    const pid = useRef(0);
 
     // 아이디 값 구하기
     const getNodeId = () => `${String(+new Date()).slice(6)}`;
@@ -98,7 +103,6 @@ function App() {
                         },els)
         ), []);
     
-
     // 엣지 제거를 위한 함수 1
     const onEdgeUpdateStart = useCallback(()=>{
         edgeUpdateSuccessful.current = false;
@@ -140,6 +144,32 @@ function App() {
         },[]
     );
 
+    // // 노드 그룹 추가
+    //https://reactflow.dev/docs/examples/layout/sub-flows/
+    // const addGroupNode = useCallback(
+    //     ()=>{
+    //         yPos.current += 50;
+    //         setNodes((updateNodes)=>{
+    //             return[
+    //                 ...updateNodes,
+    //                 {
+    //                     id: pid,
+    //                     data: {
+    //                         label:"New Node"
+    //                     },
+    //                     position: {
+    //                         x:50,
+    //                         y: yPos.current
+    //                     },
+    //                     type: "custom"
+    //                 },{
+    //                     id: 
+    //                 }
+    //             ]
+    //         })
+    //     },[]
+    // );
+
     // 파일 저장(노드, 엣지)
     const saveJson = ()=>{
         // 폴더 없다면 생성
@@ -165,6 +195,19 @@ function App() {
 
     const selTest = () => {
         console.log(selectedNode);
+        console.log("nodes: ",updateNodes);
+    }
+
+    const deleteNode = () => {
+        let tmp = [...updateNodes]
+        if(selectedNode!==null){
+            tmp.forEach(element => {
+                if(element.id === selectedNode.id){
+                    tmp.splice(tmp.indexOf(element),1)
+                    setNodes(tmp);
+                }
+            });
+        }
     }
 
     return (
@@ -186,6 +229,9 @@ function App() {
                         </Button>
                         <Button onClick={selTest}>
                             Test
+                        </Button>
+                        <Button onClick={deleteNode}>
+                            d
                         </Button>
                     </div>
                     <Flow 
