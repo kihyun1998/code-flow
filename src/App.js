@@ -22,7 +22,7 @@ import 'reactflow/dist/style.css';
 import './App.css';
 
 import { MdDarkMode,MdOutlineLightMode } from "react-icons/md";
-import { AiOutlineSave } from "react-icons/ai"
+import { AiOutlineSave,AiFillDelete } from "react-icons/ai"
 import { BsDatabaseAdd } from 'react-icons/bs'
 
 import React, { useState, useCallback,useRef } from 'react';
@@ -48,7 +48,7 @@ function App() {
     const initialEdges = useRef(edgesData);
     // 초기위치
     const yPos = useRef(0);
-    
+
     // 초기 아이디 추후에는 0말고 노드의 마지막 id로 설정해야 함
     // 왜쓰려했는지 기억안남
     const pid = useRef(0);
@@ -227,11 +227,11 @@ function App() {
                         <Button onClick={saveJson}>
                             <AiOutlineSave/>
                         </Button>
+                        <Button onClick={deleteNode}>
+                            <AiFillDelete/>
+                        </Button>
                         <Button onClick={selTest}>
                             Test
-                        </Button>
-                        <Button onClick={deleteNode}>
-                            d
                         </Button>
                     </div>
                     <Flow 
