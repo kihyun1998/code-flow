@@ -14,6 +14,8 @@ export const lightTheme = {
     controlsBorder: '#ddd',
 
     lineColor:"#B1B1B7",
+
+    groupNodeBg:'rgba(255, 0, 0, 0.2)',
   };
   
   export const darkTheme = {
@@ -32,4 +34,6 @@ export const lightTheme = {
     controlsBorder: '#575555',
 
     lineColor:"#B1B1B7",
+
+    groupNodeBg:'rgba(255, 0, 0, 0.2)',
   };

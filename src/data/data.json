@@ -13,16 +13,32 @@
             "width": 121,
             "height": 43,
             "selected": false,
-            "dragging": false
+            "dragging": false,
+            "parentNode":null
         },
         {
-            "id": "2",
+            "id": "g1",
             "data": {
-                "label": "World" 
+                "label": "Group" 
             },
             "position": {
                 "x": 110,
                 "y": 110
+            },
+            "type": "customGroup",
+            "selected": false,
+            "dragging": false,
+            "parentNode":null
+        },
+        {
+            "id": "2",
+            "parentNode":"g1",
+            "data": {
+                "label": "World" 
+            },
+            "position": {
+                "x": 10,
+                "y": 100
             },
             "type": "custom",
             "width": 121,
@@ -40,7 +56,7 @@
             "targetHandle": null,
             "id": "reactflow__edge-1-2",
             "animated": true,
-            "type": "smoothstep"
+            "style":{ "stroke": "red"}
         }
     ]
 }

@@ -26,7 +26,8 @@ export const nodes = jData.nodes.map(node => ({
     },
     type: node.type,
     width: node.width,
-    height: node.height
+    height: node.height,
+    parentNode:node.parentNode
 }));
 
 export const edges = jData.edges.map(edge=>({
