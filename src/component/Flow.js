@@ -26,12 +26,10 @@ function Flow(props) {
                 onEdgesChange={props.onEdgesChange}
                 onConnect={props.onConnect}
                 nodeTypes={NodeTypes}
-                onEdgeUpdate={props.onEdgeUpdate}
-                onEdgeUpdateStart={props.onEdgeUpdateStart}
-                onEdgeUpdateEnd={props.onEdgeUpdateEnd}
                 onNodeClick={props.onNodeClick}
                 onNodeDrag={props.onNodeDrag}
                 onPaneClick={props.onPaneClick}
+                onEdgeClick={props.onEdgeClick}
                 connectionLineComponent={CustomConnectionLine}
             >
                 <Background />

@@ -78,6 +78,8 @@ function App() {
     const [ edges, setEdges ] = useState(initialEdges.current);
     // 선택된 노드 관련 state
     const [ selectedNode, setSelectedNode ] = useState(null); 
+    // 선택된 간선 고나련 state
+    const [ selectedEdge, setSelectedEdge ] = useState(null);
     
     // node can click & drag
     const onNodesChange = useCallback(
@@ -102,24 +104,6 @@ function App() {
                         type: "smoothstep"
                         },els)
         ), []);
-    
-    // 엣지 제거를 위한 함수 1
-    const onEdgeUpdateStart = useCallback(()=>{
-        edgeUpdateSuccessful.current = false;
-    },[]);
-
-    // 엣지 제거를 위한 함수 2
-    const onEdgeUpdate = useCallback((oldEdge, newConnection)=>{
-        edgeUpdateSuccessful.current = true;
-        setEdges((els) => updateEdge(oldEdge, newConnection,els));
-    },[]);
-
-    // 엣지 제거를 위한 함수 3
-    const onEdgeUpdateEnd = useCallback((_, edge)=>{
-        if(!edgeUpdateSuccessful.current){
-            setEdges((eds)=>eds.filter((e)=>e.id !== edge.id));
-        }
-    },[]);
     
     // 노드 추가
     const addNode = useCallback(
@@ -185,12 +169,18 @@ function App() {
 
     // 노드 선택 시 selectedNode에 저장
     const onNodeClick = (event, node) => {
+        // 이전 간선 선택 초기화
+        setSelectedEdge(null)
+
         if(selectedNode != null){
+            // 이전에 선택된 노드가 있다면
             if(selectedNode.id !== node.id){
+                // 중복 선택이 아닐 때만 값 설정
                 setSelectedNode(node);
                 console.log(`click node : ${node.id}`);
             }
         }else{
+            // 이전에 선택된 노드가 없다면
             setSelectedNode(node);
             console.log(`click node : ${node.id}`);
         }
@@ -198,12 +188,18 @@ function App() {
 
     // 노드 선택 시 selectedNode에 저장
     const onNodeDrag = (event, node)=> {
+        // 이전 간선 선택 초기화
+        setSelectedEdge(null)
+
         if(selectedNode != null){
+            // 이전에 선택된 노드가 있다면
             if(selectedNode.id !== node.id){
+                // 중복 선택이 아닐 때만 값 설정
                 setSelectedNode(node);
                 console.log(`drag node : ${node.id}`);
             }
         }else{
+            // 이전에 선택된 노드가 없다면
             setSelectedNode(node);
             console.log(`drag node : ${node.id}`);
         }
@@ -212,45 +208,76 @@ function App() {
 
     // 배경화면 누르면 노드 선택 해제
     const onPaneClick = (event) => {
+        // 노드, 간선 선택 초기화
         setSelectedNode(null)
-        console.log(`selectedNode : ${selectedNode}`)
+        setSelectedEdge(null)
+        console.log(`selectedNode : ${selectedNode} selectedEdge : ${selectedEdge}`)
     }
 
-    
+    // 간선 선택시 selectedEdge에 저장
+    const onEdgeClick = (event,edge)=>{
+        // 이전 노드 선택 초기화
+        setSelectedNode(null)
+
+        if(selectedEdge != null){
+            // 이전에 선택된 간선이 있다면
+            if(edge.id !== selectedEdge.id){
+                // 중복 선택이 아닐 때만 값 설정
+                setSelectedEdge(edge);
+                console.log(`select edge : , ${edge.id}`);
+            }
+        }else{
+            // 이전에 선택된 간선이 없다면
+            setSelectedEdge(edge);
+                console.log(`select edge : , ${edge.id}`);
+        }
+        
+    }
+
     const selTest = () => {
         console.log(selectedNode);
         console.log("nodes: ",updateNodes);
     }
 
-    const deleteNode = () => {
-        
-        let tmpNodes = [...updateNodes];
-        let tmpEdges = [...edges];
-
+    const deleteFunc = () => {
         if(selectedNode!==null){
+            let tmpNodes = [...updateNodes];
+            let tmpEdges = [...edges];
+            let delList = [];
+
             // 선택 노드 제거
             tmpNodes.forEach(element => {
                 if(element.id === selectedNode.id){
+                    console.log("delete node id is ",element.id)
                     tmpNodes.splice(tmpNodes.indexOf(element),1);
                     setNodes(tmpNodes);
                 }
             });
 
             // 선택 노드와 관련 있는 간선 제거
+            tmpEdges = tmpEdges.filter((elm)=>{
+                console.log("check : ",elm)
+
+                if( elm.source === selectedNode.id || elm.target === selectedNode.id ){
+                    console.log(elm)
+                    return false;
+                }
+                return true;
+            })
+
+
+            setEdges(tmpEdges);
+        }else if(selectedEdge !== null){
+            let tmpEdges = [...edges];
+            
             tmpEdges.forEach(element=>{
-                // if(( element.source === selectedNode.id ) || ( element.target === selectedNode.id )){
-                if(( element.source === selectedNode.id )){
-                    console.log(element);
-                    tmpEdges.splice(tmpEdges.indexOf(element),1);
-                    setEdges(tmpEdges);
-                }else if(( element.target === selectedNode.id )){
+                if( element.id === selectedEdge.id ){
                     console.log(element);
                     tmpEdges.splice(tmpEdges.indexOf(element),1);
                     setEdges(tmpEdges);
                 }
-            });
+            })
         }
-
 
     }
 
@@ -271,7 +298,7 @@ function App() {
                         <Button onClick={saveJson}>
                             <AiOutlineSave/>
                         </Button>
-                        <Button onClick={deleteNode}>
+                        <Button onClick={deleteFunc}>
                             <AiFillDelete/>
                         </Button>
                         <Button onClick={selTest}>
@@ -285,11 +312,9 @@ function App() {
                         onNodesChange={onNodesChange} 
                         onEdgesChange={onEdgesChange} 
                         onConnect={onConnect}
-                        onEdgeUpdateStart={onEdgeUpdateStart}
-                        onEdgeUpdate={onEdgeUpdate}
-                        onEdgeUpdateEnd={onEdgeUpdateEnd}
                         onNodeClick={onNodeClick}
                         onNodeDrag={onNodeDrag}
+                        onEdgeClick={onEdgeClick}
                         onPaneClick={onPaneClick}
                     />
                 </ThemeProvider>
