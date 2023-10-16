@@ -57,7 +57,7 @@
             "id": "reactflow__edge-1-2",
             "animated": true,
             "style":{ 
-                "stroke": "red" 
+                "stroke": "rgb(35, 123, 255)" 
             }
         }
     ]

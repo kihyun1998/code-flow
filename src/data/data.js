@@ -39,6 +39,6 @@ export const edges = jData.edges.map(edge=>({
     animated: edge.animated,
     type: "smoothstep",
     style: {
-        stroke: "red"
+        stroke: "rgb(35, 123, 255)"
     }
 }));

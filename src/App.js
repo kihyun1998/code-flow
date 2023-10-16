@@ -74,6 +74,11 @@ function App() {
     // 선택된 간선 고나련 state
     const [ selectedEdge, setSelectedEdge ] = useState(null);
     
+
+    // 엣지 색상
+    const clickColor = "#2073C5"
+    let unClickColor = "gray"
+
     // node can click & drag
     const onNodesChange = useCallback(
         (changes) => setNodes(
@@ -95,7 +100,7 @@ function App() {
                         ...params,
                         animated: true,
                         type: "smoothstep",
-                        style: { stroke: "red" }
+                        style: { stroke: unClickColor }
                         },els)
         ), []);
     
@@ -122,31 +127,6 @@ function App() {
         },[]
     );
 
-    // // 노드 그룹 추가
-    //https://reactflow.dev/docs/examples/layout/sub-flows/
-    // const addGroupNode = useCallback(
-    //     ()=>{
-    //         yPos.current += 50;
-    //         setNodes((updateNodes)=>{
-    //             return[
-    //                 ...updateNodes,
-    //                 {
-    //                     id: pid,
-    //                     data: {
-    //                         label:"New Node"
-    //                     },
-    //                     position: {
-    //                         x:50,
-    //                         y: yPos.current
-    //                     },
-    //                     type: "custom"
-    //                 },{
-    //                     id: 
-    //                 }
-    //             ]
-    //         })
-    //     },[]
-    // );
 
     // 파일 저장(노드, 엣지)
     const saveJson = ()=>{
@@ -178,6 +158,7 @@ function App() {
             setSelectedNode(node);
             console.log(`click node : ${node.id}`);
         }
+        // 엣지 색 초기화
         resetEdgeColor()
     }
 
@@ -198,6 +179,7 @@ function App() {
             setSelectedNode(node);
             console.log(`drag node : ${node.id}`);
         }
+        // 엣지 색 초기화
         resetEdgeColor()
     }
 
@@ -206,14 +188,16 @@ function App() {
         // 노드, 간선 선택 초기화
         setSelectedNode(null)
         setSelectedEdge(null)
+        // 엣지 색 초기화
         resetEdgeColor()
     }
 
+    // 엣지 색 초기화 함수
     const resetEdgeColor = () => {
         let tmpEdges = [...edges];
         tmpEdges.forEach((elm)=>{
             elm.style = {
-                stroke:"red"
+                stroke: unClickColor
             }
         })
         setEdges(tmpEdges);
@@ -223,6 +207,7 @@ function App() {
     const onEdgeClick = (event,edge)=>{
         // 이전 노드 선택 초기화
         setSelectedNode(null)
+
 
         if(selectedEdge != null){
             // 이전에 선택된 간선이 있다면
@@ -236,12 +221,12 @@ function App() {
     
                     if( elm.id === edge.id ){
                         elm.style = {
-                            stroke: "blue"
+                            stroke: clickColor
                         }
                         return elm;
                     }else{
                         elm.style = {
-                            stroke: "red"
+                            stroke: unClickColor
                         }
                         return elm;
                     }
@@ -258,12 +243,12 @@ function App() {
 
                 if( elm.id === edge.id ){
                     elm.style = {
-                        stroke: "blue"
+                        stroke: clickColor
                     }
                     return elm;
                 }else{
                     elm.style = {
-                        stroke: "red"
+                        stroke: unClickColor
                     }
                     return elm;
                 }
