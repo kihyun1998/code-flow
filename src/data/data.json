@@ -56,7 +56,9 @@
             "targetHandle": null,
             "id": "reactflow__edge-1-2",
             "animated": true,
-            "style":{ "stroke": "red"}
+            "style":{ 
+                "stroke": "red" 
+            }
         }
     ]
 }

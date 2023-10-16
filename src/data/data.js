@@ -37,5 +37,8 @@ export const edges = jData.edges.map(edge=>({
     target: edge.target,
     targetHandle: edge.targetHandle,
     animated: edge.animated,
-    type: edge.type
+    type: "smoothstep",
+    style: {
+        stroke: "red"
+    }
 }));

@@ -8,19 +8,20 @@ export default ({
     toY,
     toPosition,
     connectionLineType,
-    connectionLineStyle,
+    connectionLineStyle
 }) => {
+
     return (
         <g>
-        <path
-            fill="none"
-            stroke="#B1B1B7"
-            strokeWidth={1}
-            className="animated"
-            connectionLineType="smoothstep"
-            d={`M${fromX},${fromY} C ${fromX} ${toY} ${fromX} ${toY} ${toX},${toY}`}
-        />
-        <circle cx={toX} cy={toY} fill="#fff" r={3} stroke="#B1B1B7" strokeWidth={1} />
+            <path
+                fill="none"
+                stroke="red"
+                strokeWidth={1}
+                className="animated"
+                connectionLineType="smoothstep"
+                d={`M${fromX},${fromY} C ${fromX} ${toY} ${fromX} ${toY} ${toX},${toY}`}
+            />
+            <circle cx={toX} cy={toY} fill="red" r={3} stroke="red" strokeWidth={1} />
         </g>
     );
 };

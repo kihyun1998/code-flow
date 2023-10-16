@@ -1,8 +1,7 @@
 import { 
     applyEdgeChanges, 
     applyNodeChanges,
-    addEdge,
-    updateEdge
+    addEdge
 } from 'reactflow';
 
 import {
@@ -40,18 +39,12 @@ const jsonDataPath = `${homePath}/jsonData.json`
 
 
 function App() {
-    // 엣지 수정을 위한 변수
-    const edgeUpdateSuccessful = useRef(true);
     // 초기 노드
     const initialNodes = useRef(nodesData);
     //초기 엣지
     const initialEdges = useRef(edgesData);
     // 초기위치
     const yPos = useRef(0);
-
-    // 초기 아이디 추후에는 0말고 노드의 마지막 id로 설정해야 함
-    // 왜쓰려했는지 기억안남
-    const pid = useRef(0);
 
     // 아이디 값 구하기
     const getNodeId = () => `${String(+new Date()).slice(6)}`;
@@ -101,7 +94,8 @@ function App() {
             (els) => addEdge({
                         ...params,
                         animated: true,
-                        type: "smoothstep"
+                        type: "smoothstep",
+                        style: { stroke: "red" }
                         },els)
         ), []);
     
@@ -184,6 +178,7 @@ function App() {
             setSelectedNode(node);
             console.log(`click node : ${node.id}`);
         }
+        resetEdgeColor()
     }
 
     // 노드 선택 시 selectedNode에 저장
@@ -203,7 +198,7 @@ function App() {
             setSelectedNode(node);
             console.log(`drag node : ${node.id}`);
         }
-        
+        resetEdgeColor()
     }
 
     // 배경화면 누르면 노드 선택 해제
@@ -211,7 +206,17 @@ function App() {
         // 노드, 간선 선택 초기화
         setSelectedNode(null)
         setSelectedEdge(null)
-        console.log(`selectedNode : ${selectedNode} selectedEdge : ${selectedEdge}`)
+        resetEdgeColor()
+    }
+
+    const resetEdgeColor = () => {
+        let tmpEdges = [...edges];
+        tmpEdges.forEach((elm)=>{
+            elm.style = {
+                stroke:"red"
+            }
+        })
+        setEdges(tmpEdges);
     }
 
     // 간선 선택시 selectedEdge에 저장
@@ -224,12 +229,46 @@ function App() {
             if(edge.id !== selectedEdge.id){
                 // 중복 선택이 아닐 때만 값 설정
                 setSelectedEdge(edge);
-                console.log(`select edge : , ${edge.id}`);
+
+                let tmpEdges = [...edges];
+
+                tmpEdges = tmpEdges.filter((elm)=>{
+    
+                    if( elm.id === edge.id ){
+                        elm.style = {
+                            stroke: "blue"
+                        }
+                        return elm;
+                    }else{
+                        elm.style = {
+                            stroke: "red"
+                        }
+                        return elm;
+                    }
+                })
+                setEdges(tmpEdges);
             }
         }else{
             // 이전에 선택된 간선이 없다면
             setSelectedEdge(edge);
-                console.log(`select edge : , ${edge.id}`);
+
+            let tmpEdges = [...edges];
+
+            tmpEdges = tmpEdges.filter((elm)=>{
+
+                if( elm.id === edge.id ){
+                    elm.style = {
+                        stroke: "blue"
+                    }
+                    return elm;
+                }else{
+                    elm.style = {
+                        stroke: "red"
+                    }
+                    return elm;
+                }
+            })
+            setEdges(tmpEdges);
         }
         
     }
@@ -243,7 +282,6 @@ function App() {
         if(selectedNode!==null){
             let tmpNodes = [...updateNodes];
             let tmpEdges = [...edges];
-            let delList = [];
 
             // 선택 노드 제거
             tmpNodes.forEach(element => {
