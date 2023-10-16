@@ -30,6 +30,7 @@ function Flow(props) {
                 onEdgeUpdateStart={props.onEdgeUpdateStart}
                 onEdgeUpdateEnd={props.onEdgeUpdateEnd}
                 onNodeClick={props.onNodeClick}
+                onNodeDrag={props.onNodeDrag}
                 onPaneClick={props.onPaneClick}
                 connectionLineComponent={CustomConnectionLine}
             >

@@ -183,31 +183,75 @@ function App() {
 
 
 
-    // 노드 선택 시 세팅
+    // 노드 선택 시 selectedNode에 저장
     const onNodeClick = (event, node) => {
-        setSelectedNode(node)
-        console.log('click node', node);
+        if(selectedNode != null){
+            if(selectedNode.id !== node.id){
+                setSelectedNode(node);
+                console.log(`click node : ${node.id}`);
+            }
+        }else{
+            setSelectedNode(node);
+            console.log(`click node : ${node.id}`);
+        }
     }
+
+    // 노드 선택 시 selectedNode에 저장
+    const onNodeDrag = (event, node)=> {
+        if(selectedNode != null){
+            if(selectedNode.id !== node.id){
+                setSelectedNode(node);
+                console.log(`drag node : ${node.id}`);
+            }
+        }else{
+            setSelectedNode(node);
+            console.log(`drag node : ${node.id}`);
+        }
+        
+    }
+
     // 배경화면 누르면 노드 선택 해제
     const onPaneClick = (event) => {
         setSelectedNode(null)
+        console.log(`selectedNode : ${selectedNode}`)
     }
 
+    
     const selTest = () => {
         console.log(selectedNode);
         console.log("nodes: ",updateNodes);
     }
 
     const deleteNode = () => {
-        let tmp = [...updateNodes]
+        
+        let tmpNodes = [...updateNodes];
+        let tmpEdges = [...edges];
+
         if(selectedNode!==null){
-            tmp.forEach(element => {
+            // 선택 노드 제거
+            tmpNodes.forEach(element => {
                 if(element.id === selectedNode.id){
-                    tmp.splice(tmp.indexOf(element),1)
-                    setNodes(tmp);
+                    tmpNodes.splice(tmpNodes.indexOf(element),1);
+                    setNodes(tmpNodes);
+                }
+            });
+
+            // 선택 노드와 관련 있는 간선 제거
+            tmpEdges.forEach(element=>{
+                // if(( element.source === selectedNode.id ) || ( element.target === selectedNode.id )){
+                if(( element.source === selectedNode.id )){
+                    console.log(element);
+                    tmpEdges.splice(tmpEdges.indexOf(element),1);
+                    setEdges(tmpEdges);
+                }else if(( element.target === selectedNode.id )){
+                    console.log(element);
+                    tmpEdges.splice(tmpEdges.indexOf(element),1);
+                    setEdges(tmpEdges);
                 }
             });
         }
+
+
     }
 
     return (
@@ -245,6 +289,7 @@ function App() {
                         onEdgeUpdate={onEdgeUpdate}
                         onEdgeUpdateEnd={onEdgeUpdateEnd}
                         onNodeClick={onNodeClick}
+                        onNodeDrag={onNodeDrag}
                         onPaneClick={onPaneClick}
                     />
                 </ThemeProvider>
